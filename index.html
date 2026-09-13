@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice Manager</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">INVOICE MANAGER</div>
+  <div class="top-actions">
+    <button class="btn btn-light" id="refreshBtn">Refresh</button>
+    <button class="btn btn-primary" id="newInvoiceBtn">+ Invoice Baru</button>
+  </div>
+</header>
+
+<main class="container">
+  <section class="page-head">
+    <div><div class="eyebrow">INVOICE SYSTEM</div><h1>Invoice</h1><p>Kelola invoice dari Google Sheet.</p></div>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section class="card"><div class="search-wrap"><span>⌕</span><input id="searchInput" placeholder="Cari invoice atau customer..."></div></section>
+
+  <section class="card table-card">
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Invoice</th><th>Tanggal</th><th>Customer</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody id="invoiceList"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="emptyState" hidden>Belum ada invoice.</div>
+  </section>
+</main>
+
+<div class="modal" id="formModal">
+<div class="modal-box form-box">
+  <div class="modal-head"><div><div class="eyebrow">INVOICE</div><h2>Buat Invoice</h2></div><button class="icon-btn" data-close="formModal">×</button></div>
+  <div class="form-grid">
+    <label>Invoice No<input id="invoiceNo" readonly placeholder="Otomatis"></label>
+    <label>Tanggal<input id="invoiceDate" type="date"></label>
+    <label class="full">Customer<select id="customerSelect"></select></label>
+    <label>Nama Customer<input id="customer"></label>
+    <label>Telepon<input id="phone"></label>
+    <label>Email<input id="email"></label>
+    <label>Alamat<input id="address"></label>
+    <label>Status<select id="status"><option>Draft</option><option>Sent</option><option>Unpaid</option><option>Partially Paid</option><option>Paid</option><option>Cancelled</option></select></label>
+    <label>Metode Pembayaran<select id="paymentMethod"><option>Transfer Bank</option><option>Cash</option><option>E-Wallet</option><option>Credit Card</option><option>Other</option></select></label>
+  </div>
+  <div class="section-head"><h3>Item Invoice</h3><button class="btn btn-primary btn-small" id="addItemBtn">+ Tambah Item</button></div>
+  <div class="table-scroll">
+    <table class="items-table"><thead><tr><th>No</th><th>Description</th><th>Qty</th><th>Price</th><th>Total</th><th></th></tr></thead><tbody id="itemsBody"></tbody></table>
+  </div>
+  <div class="totals">
+    <div><span>Subtotal</span><strong id="subtotal">Rp 0</strong></div>
+    <div><span>Pajak <input class="tax-input" id="taxPercent" type="number"> %</span><strong id="tax">Rp 0</strong></div>
+    <div class="grand"><span>GRAND TOTAL</span><strong id="grandTotal">Rp 0</strong></div>
+  </div>
+  <label class="notes">Catatan<textarea id="notes"></textarea></label>
+  <div class="modal-actions"><button class="btn btn-light" data-close="formModal">Batal</button><button class="btn btn-primary" id="saveBtn">Simpan Invoice</button></div>
+</div>
+</div>
+
+<div class="modal" id="previewModal">
+<div class="modal-box preview-box">
+  <div class="preview-actions no-print"><button class="btn btn-light" data-close="previewModal">Tutup</button><button class="btn btn-primary" id="printBtn">🖨 Print</button></div>
+  <div id="printArea"></div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="js/app.js"></script>
+</body>
+</html>
