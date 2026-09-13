@@ -340,13 +340,15 @@ function buildInvoiceHTML(invoice) {
   return `
     <div class="invoice">
       <div class="invoice-top">
-        <div>
-          <div class="company">${escapeHtml(settings['Nama Perusahaan'] || 'NAMA PERUSAHAAN')}</div>
-          <div class="company-sub">${escapeHtml(settings['Alamat Perusahaan'] || '')}</div>
+        <div class="invoice-company-wrap">
+          <img src="StratoArtStudio.svg" alt="Strato Art Studio" class="invoice-logo">
+          <div>
+            <div class="company">${escapeHtml(settings['Nama Perusahaan'] || 'Strato Art Studio')}</div>
+            <div class="company-sub">${escapeHtml(settings['Alamat Perusahaan'] || '')}</div>
+          </div>
         </div>
         <div style="text-align:right">
           <div class="invoice-title">INVOICE</div>
-          <div style="font-size:10px">${escapeHtml(settings['Website'] || '')}</div>
         </div>
       </div>
 
