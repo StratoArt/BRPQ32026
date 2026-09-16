@@ -1,74 +1,79 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Invoice Manager</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BRP Bayer — Q3 Retail Dashboard</title>
+<style>
+:root{--g:#087f70;--g2:#159681;--mint:#39b99e;--o:#f47b20;--ink:#263238;--muted:#77818a;--line:#e5e9eb;--bg:#f4f6f6;--card:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
+.app{display:flex;min-height:100vh}.side{width:72px;background:#08776b;color:white;position:fixed;inset:0 auto 0 0;z-index:5;display:flex;flex-direction:column;align-items:center;padding:18px 0}
+.brand{width:42px;height:42px;background:white;color:var(--g);border-radius:13px;display:grid;place-items:center;font-weight:900;margin-bottom:25px}.nav{display:grid;gap:10px}.nav button{width:46px;height:46px;border:0;background:transparent;color:#d9f4ef;border-radius:14px;font-size:20px}.nav .on,.nav button:hover{background:#ffffff22;color:white}
+.main{margin-left:72px;width:calc(100% - 72px)}.top{height:68px;display:flex;align-items:center;gap:18px;padding:10px 26px}.new{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 17px;color:var(--g);font-weight:750}
+.search{flex:1;max-width:470px;margin:auto;position:relative}.search input{width:100%;border:1px solid var(--line);border-radius:24px;padding:12px 18px 12px 43px;outline:0;box-shadow:0 2px 9px #173c4010}.search span{position:absolute;left:17px;top:9px;color:#777}.actions{display:flex;gap:15px;align-items:center;color:var(--g)}.avatar{width:34px;height:34px;border-radius:50%;background:#d6e9e5;display:grid;place-items:center;font-size:12px;font-weight:800}
+.content{padding:0 18px 28px}.hero,.filters,.card,.kpi{background:white;box-shadow:0 2px 10px #19373c0c}.hero{border-radius:0 0 20px 20px;padding:0 30px 17px;margin-bottom:14px}.tabs{display:flex;gap:30px;border-bottom:1px solid var(--line)}.tab{padding:17px 2px 13px;border:0;background:none}.tab.on{color:var(--g);font-weight:750;border-bottom:3px solid var(--g)}.herorow{display:flex;justify-content:space-between;align-items:center;padding-top:14px}.title{font-size:19px;font-weight:700}.sub{font-size:12px;color:var(--muted);margin-top:3px}.period{background:#e4f1ef;color:var(--g);padding:7px 12px;border-radius:18px;font-size:11px;font-weight:800}
+.filters{border-radius:20px;padding:16px;display:grid;grid-template-columns:repeat(5,1fr) 1.1fr;gap:10px;margin-bottom:14px}.field label{display:block;font-size:10px;color:var(--muted);font-weight:750;margin:0 0 5px 3px}.field select,.field input{width:100%;height:40px;border:1px solid var(--line);border-radius:11px;padding:0 10px;background:#fff;outline:0}.reset,.filterbtn{height:40px;border:0;border-radius:11px;color:var(--g);font-weight:750;background:#eef4f3;cursor:pointer}.filterbtn{display:none;width:100%;margin-bottom:9px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}.kpi{border-radius:20px;padding:19px 21px}.kpi.maink{background:linear-gradient(135deg,#087f70,#116c64);color:#fff}.kl{font-size:12px;font-weight:700;opacity:.78}.kv{font-size:29px;font-weight:850;margin-top:8px}.kn{font-size:10px;opacity:.65;margin-top:5px}
+.grid{display:grid;grid-template-columns:1.15fr 1fr;gap:14px;margin-bottom:14px}.card{border-radius:20px;padding:20px;min-width:0}.head{display:flex;justify-content:space-between;margin-bottom:14px}.ct{font-size:16px;font-weight:750}.cs{font-size:10px;color:var(--muted);margin-top:3px}.more{color:var(--g);font-size:20px}.chart{height:255px}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:10px;color:#677176}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:4px}
+.tablecard{padding:0;overflow:hidden}.tablehead{padding:18px 20px 13px;border-bottom:1px solid var(--line)}.scroll{overflow:auto}table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:11px 14px;border-bottom:1px solid #eef0f1;font-size:11px;text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}th{font-size:9px;color:#758087;text-transform:uppercase;background:#fafbfb}td:first-child{font-weight:650}tr.total td{font-weight:850;background:#f5f8f7}.empty{text-align:center!important;color:var(--muted);padding:35px}
+.loading{position:fixed;inset:0;background:#f4f6f6bb;backdrop-filter:blur(3px);display:none;place-items:center;z-index:50}.loading.show{display:grid}.loadbox{background:white;padding:25px 30px;border-radius:18px;box-shadow:0 10px 40px #0002;text-align:center}.spin{width:28px;height:28px;border:3px solid #dce9e7;border-top-color:var(--g);border-radius:50%;animation:s .8s linear infinite;margin:0 auto 10px}@keyframes s{to{transform:rotate(360deg)}}
+.error{display:none;background:#fff1ed;color:#a33a1d;border:1px solid #ffd6ca;border-radius:14px;padding:13px;margin-bottom:13px;font-size:11px}.foot{text-align:center;color:#8a9499;font-size:9px;padding:6px}
+@media(max-width:1050px){.filters{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.side{width:58px}.main{margin-left:58px;width:calc(100% - 58px)}.top{height:58px;padding:8px 10px;gap:8px}.new{padding:8px 10px;font-size:11px}.actions{gap:8px;font-size:16px}.content{padding:0 9px 18px}.hero{padding:0 14px 13px}.tabs{gap:18px;overflow:auto}.tab{font-size:11px;white-space:nowrap}.title{font-size:15px}.period{font-size:9px}.filterbtn{display:block}.filters{display:none;grid-template-columns:1fr 1fr;padding:12px}.filters.open{display:grid}.reset{grid-column:1/-1}.kpis{grid-template-columns:1fr;gap:9px}.kpi{padding:15px 17px}.kv{font-size:25px}.grid{grid-template-columns:1fr;gap:9px}.card{padding:15px;border-radius:17px}.chart{height:220px}.tablehead{padding:15px}}
+@media(max-width:390px){.filters{grid-template-columns:1fr}.side{width:52px}.main{margin-left:52px;width:calc(100% - 52px)}.brand{width:36px;height:36px}.nav button{width:38px;height:38px}}
+</style>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand"><img src="StratoArtStudio.svg" alt="Strato Art Studio" class="brand-logo"><span>STRATO ART STUDIO</span></div>
-  <div class="top-actions">
-    <button class="btn btn-light" id="refreshBtn">Refresh</button>
-    <button class="btn btn-primary" id="newInvoiceBtn">+ Invoice Baru</button>
-  </div>
-</header>
-
-<main class="container">
-  <section class="page-head">
-    <div><div class="eyebrow">INVOICE SYSTEM</div><h1>Invoice</h1><p>Kelola invoice dari Google Sheet.</p></div>
-    <div class="stats" id="stats"></div>
-  </section>
-
-  <section class="card"><div class="search-wrap"><span>⌕</span><input id="searchInput" placeholder="Cari invoice atau customer..."></div></section>
-
-  <section class="card table-card">
-    <div class="table-scroll">
-      <table>
-        <thead><tr><th>Invoice</th><th>Tanggal</th><th>Customer</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
-        <tbody id="invoiceList"></tbody>
-      </table>
-    </div>
-    <div class="empty" id="emptyState" hidden>Belum ada invoice.</div>
-  </section>
-</main>
-
-<div class="modal" id="formModal">
-<div class="modal-box form-box">
-  <div class="modal-head"><div><div class="eyebrow">INVOICE</div><h2>Buat Invoice</h2></div><button class="icon-btn" data-close="formModal" type="button">×</button></div>
-  <div class="form-grid">
-    <label>Invoice No<input id="invoiceNo" readonly placeholder="Otomatis"></label>
-    <label>Tanggal<input id="invoiceDate" type="date"></label>
-    <label class="full">Customer<select id="customerSelect"></select></label>
-    <label>Nama Customer<input id="customer"></label>
-    <label>Telepon<input id="phone"></label>
-    <label>Email<input id="email" type="email"></label>
-    <label>Alamat<input id="address"></label>
-    <label>Status<select id="status"><option>Draft</option><option>Sent</option><option>Unpaid</option><option>Partially Paid</option><option>Paid</option><option>Cancelled</option></select></label>
-    <label>Metode Pembayaran<select id="paymentMethod"><option>Transfer Bank</option><option>Cash</option><option>E-Wallet</option><option>Credit Card</option><option>Other</option></select></label>
-  </div>
-  <div class="section-head"><h3>Item Invoice</h3><button class="btn btn-primary btn-small" id="addItemBtn" type="button">+ Tambah Item</button></div>
-  <div class="table-scroll">
-    <table class="items-table"><thead><tr><th>No</th><th>Description</th><th>Qty</th><th>Price</th><th>Total</th><th></th></tr></thead><tbody id="itemsBody"></tbody></table>
-  </div>
-  <div class="totals">
-    <div><span>Subtotal</span><strong id="subtotal">Rp 0</strong></div>
-    <div><span>Pajak <input class="tax-input" id="taxPercent" type="number" min="0" step="0.01"> %</span><strong id="tax">Rp 0</strong></div>
-    <div class="grand"><span>GRAND TOTAL</span><strong id="grandTotal">Rp 0</strong></div>
-  </div>
-  <label class="notes">Catatan<textarea id="notes"></textarea></label>
-  <div class="modal-actions"><button class="btn btn-light" data-close="formModal" type="button">Batal</button><button class="btn btn-primary" id="saveBtn" type="button">Simpan Invoice</button></div>
-</div>
-</div>
-
-<div class="modal" id="previewModal">
-<div class="modal-box preview-box">
-  <div class="preview-actions no-print"><button class="btn btn-light" data-close="previewModal" type="button">Tutup</button><button class="btn btn-primary" id="printBtn" type="button">🖨 Print</button></div>
-  <div id="printArea"></div>
-</div>
-</div>
-<div class="toast" id="toast"></div>
-<script src="js/app.js"></script>
-</body>
-</html>
+<div class="loading" id="loading"><div class="loadbox"><div class="spin"></div><b>Memuat BRP Bayer...</b><div style="font-size:10px;color:#77818a;margin-top:5px">Mengambil data dari Google Sheets</div></div></div>
+<aside class="side"><div class="brand">B</div><div class="nav">
+<button class="on">◴</button><button>▥</button><button>♙</button><button>▣</button><button>◉</button><button>▤</button><button>◎</button>
+</div></aside>
+<main class="main">
+<header class="top"><button class="new">＋ New</button><div class="search"><span>⌕</span><input id="search" placeholder="Search customer or product..."></div><div class="actions"><span>♧</span><div class="avatar">BR</div><span>☰</span></div></header>
+<div class="content">
+<section class="hero"><div class="tabs"><button class="tab on">Status</button><button class="tab">Marketing</button><button class="tab">Sales</button><button class="tab">Requests</button></div><div class="herorow"><div><div class="title">BRP Bayer — Q3 Retail Performance</div><div class="sub">Interactive dashboard • SUM seperti Pivot Table</div></div><div class="period">● Q3 · Jul–Sep</div></div></section>
+<button class="filterbtn" id="filterbtn">☰ &nbsp; Filters</button>
+<section class="filters" id="filters">
+<div class="field"><label>Retail</label><select id="retail"><option value="">All Retail</option></select></div>
+<div class="field"><label>Distrik</label><select id="distrik"><option value="">All Distrik</option></select></div>
+<div class="field"><label>Customer</label><select id="customer"><option value="">All Customer</option></select></div>
+<div class="field"><label>Grup Produk</label><select id="group"><option value="">All Groups</option></select></div>
+<div class="field"><label>Produk</label><select id="product"><option value="">All Products</option></select></div>
+<button class="reset" id="reset">Reset Filter</button>
+</section>
+<div class="error" id="error"></div>
+<section class="kpis">
+<div class="kpi maink"><div class="kl">Total Point</div><div class="kv" id="point">—</div><div class="kn">SUM Poin • filter aktif</div></div>
+<div class="kpi"><div class="kl">Net Sales Value</div><div class="kv" id="sales">—</div><div class="kn">SUM Penjualan bersih (Rupiah)</div></div>
+<div class="kpi"><div class="kl">Net Sales Volume</div><div class="kv" id="volume">—</div><div class="kn">SUM Penjualan bersih (kg / l)</div></div>
+</section>
+<section class="grid">
+<div class="card"><div class="head"><div><div class="ct">Point by Retail</div><div class="cs">Distribusi point berdasarkan Jenis CP</div></div><div class="more">⋮</div></div><div class="chart" id="retailChart"></div><div class="legend" id="legend"></div></div>
+<div class="card"><div class="head"><div><div class="ct">Sales Value by Product</div><div class="cs">Produk pada filter aktif</div></div><div class="more">⋮</div></div><div class="chart" id="productChart"></div></div>
+</section>
+<section class="grid">
+<div class="card tablecard"><div class="tablehead"><div class="ct">Performance by Retailer → Customer</div><div class="cs">Retail = Jenis CP • Customer mengikuti filter Retail</div></div><div class="scroll"><table><thead><tr><th>Customer</th><th>Point</th><th>Sales Value</th><th>Volume Kg/L</th></tr></thead><tbody id="customers"></tbody></table></div></div>
+<div class="card tablecard"><div class="tablehead"><div class="ct">Performance by Product</div><div class="cs">SUM Point, Value dan Volume</div></div><div class="scroll"><table><thead><tr><th>Product</th><th>Point</th><th>Sales Value</th><th>Volume Kg/L</th></tr></thead><tbody id="products"></tbody></table></div></div>
+</section>
+<div class="foot">BRP Bayer Q3 • Google Sheets • Retail = Jenis CP • Aggregation = SUM</div>
+</div></main>
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbzSq9g8WJvlUGnJbqfAf5KR9YL12rFswT8xmVBt7CcJY4psCl7X9vOT-qAW70tA-b8Esw/exec";
+let DATA=[];
+const $=id=>document.getElementById(id), n=v=>Number.isFinite(Number(v))?Number(v):0;
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const num=v=>new Intl.NumberFormat("id-ID",{maximumFractionDigits:2}).format(n(v));
+const money=v=>{v=n(v);if(Math.abs(v)>=1e9)return"Rp "+(v/1e9).toFixed(2)+" M";if(Math.abs(v)>=1e6)return"Rp "+(v/1e6).toFixed(2)+" jt";if(Math.abs(v)>=1e3)return"Rp "+(v/1e3).toFixed(1)+" rb";return"Rp "+num(v)};
+function unique(f){return[...new Set(DATA.map(x=>x[f]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),"id"))}
+function fill(id,vals,label){let e=$(id),old=e.value;e.innerHTML='<option value="">'+label+"</option>"+vals.map(v=>'<option value="'+esc(v)+'">'+esc(v)+"</option>").join("");if(vals.includes(old))e.value=old}
+function filters(){fill("retail",unique("retail"),"All Retail");fill("distrik",unique("distrik"),"All Distrik");fill("customer",unique("customer"),"All Customer");fill("group",unique("grup_produk"),"All Groups");fill("product",unique("product"),"All Products")}
+function rows(){let R=$("retail").value,D=$("distrik").value,C=$("customer").value,G=$("group").value,P=$("product").value,Q=$("search").value.toLowerCase().trim();return DATA.filter(x=>(!R||x.retail===R)&&(!D||x.distrik===D)&&(!C||x.customer===C)&&(!G||x.grup_produk===G)&&(!P||x.product===P)&&(!Q||[x.customer,x.product,x.retail,x.distrik,x.grup_produk,x.sku].join(" ").toLowerCase().includes(Q)))}
+function agg(a,k){let m=new Map();a.forEach(r=>{let key=r[k]||"(Blank)";if(!m.has(key))m.set(key,{name:key,point:0,sales:0,volume:0});let x=m.get(key);x.point+=n(r.point);x.sales+=n(r.sales_value);x.volume+=n(r.volume)});return[...m.values()]}
+function render(){let a=rows(),p=a.reduce((s,r)=>s+n(r.point),0),v=a.reduce((s,r)=>s+n(r.volume),0),sv=a.reduce((s,r)=>s+n(r.sales_value),0);$("point").textContent=num(p);$("sales").textContent=money(sv);$("volume").textContent=num(v);table("customers",agg(a,"customer").sort((a,b)=>b.point-a.point));table("products",agg(a,"product").sort((a,b)=>b.point-a.point));retailChart(agg(a,"retail").filter(x=>x.point>0).sort((a,b)=>b.point-a.point));productChart(agg(a,"product").filter(x=>x.sales!==0).sort((a,b)=>b.sales-a.sales).slice(0,7))}
+function table(id,a){if(!a.length){$(id).innerHTML='<tr><td colspan="4" class="empty">Tidak ada data</td></tr>';return}let t=a.reduce((z,x)=>(z.p+=x.point,z.s+=x.sales,z.v+=x.volume,z),{p:0,s:0,v:0});$(id).innerHTML=a.slice(0,100).map(x=>'<tr><td>'+esc(x.name)+"</td><td>"+num(x.point)+"</td><td>"+money(x.sales)+"</td><td>"+num(x.volume)+"</td></tr>").join("")+'<tr class="total"><td>TOTAL</td><td>'+num(t.p)+"</td><td>"+money(t.s)+"</td><td>"+num(t.v)+"</td></tr>"}
+function retailChart(a){let b=$("retailChart"),l=$("legend");if(!a.length){b.innerHTML='<div class="empty">Tidak ada data</div>';l.innerHTML="";return}let total=a.reduce((s,x)=>s+x.point,0),cx=170,cy=125,r=76,sw=34,ang=-Math.PI/2,cols=["#087f70","#39b99e","#f47b20","#a8d9e4","#68747a","#c8d4d2"];let paths=a.map((x,i)=>{let e=ang+(x.point/total)*Math.PI*2,large=e-ang>Math.PI?1:0,x1=cx+r*Math.cos(ang),y1=cy+r*Math.sin(ang),x2=cx+r*Math.cos(e),y2=cy+r*Math.sin(e),d=`M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`;ang=e;return[d,cols[i%cols.length]]});b.innerHTML='<svg viewBox="0 0 340 250"><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="#e7ebec" stroke-width="'+sw+'">'+""+'</circle>'+paths.map(p=>'<path d="'+p[0]+'" fill="none" stroke="'+p[1]+'" stroke-width="'+sw+'"/>').join("")+'<text x="'+cx+'" y="'+(cy-5)+'" text-anchor="middle" font-size="27" font-weight="800" fill="#263238">'+num(total)+'</text><text x="'+cx+'" y="'+(cy+16)+'" text-anchor="middle" font-size="11" fill="#77818a">TOTAL POINT</text></svg>';l.innerHTML=a.slice(0,6).map((x,i)=>'<span><i class="dot" style="background:'+cols[i%cols.length]+'"></i>'+esc(x.name)+" · "+(total?x.point/total*100:0).toFixed(1)+"%</span>").join("")}
+function productChart(a){let b=$("productChart");if(!a.length){b.innerHTML='<div class="empty">Tidak ada data</div>';return}let max=Math.max(...a.map(x=>Math.abs(x.sales)),1),left=125,w=320,h=31;b.innerHTML='<svg viewBox="0 0 470 '+(20+h*a.length)+'">'+a.map((x,i)=>{let y=12+i*h,ww=Math.max(2,Math.abs(x.sales)/max*w);return'<text x="'+(left-8)+'" y="'+(y+14)+'" text-anchor="end" font-size="10" fill="#59646a">'+esc(String(x.name).slice(0,19)+(String(x.name).length>19?"…":""))+'</text><rect x="'+left+'" y="'+y+'" width="'+w+'" height="18" rx="9" fill="#edf2f1"/><rect x="'+left+'" y="'+y+'" width="'+ww+'" height="18" rx="9" fill="#159681"/><text x="'+Math.min(left+ww+7,left+w+4)+'" y="'+(y+13)+'" font-size="9" fill="#59646a">'+esc(money(x.sales))+"</text>"}).join("")+"</svg>"}
+async function load(){ $("loading").classList.add("show");try{let r=await fetch(API_URL+"?action=data&ts="+Date.now()),j=await r.json();if(!j.success)throw Error(j.error||"API error");DATA=Array.isArray(j.data)?j.data:[];filters();render()}catch(e){$("error").style.display="block";$("error").innerHTML="<b>Gagal memuat data.</b><br>"+esc(e.message)+"<br><br>Pastikan Web App Apps Script dapat diakses publik."}finally{$("loading").classList.remove("show")}}
+["retail","distrik","customer","group","product"].forEach(id=>$(id).addEventListener("change",render));$("search").addEventListener("input",render);$("reset").addEventListener("click",()=>{["retail","distrik","customer","group","product"].forEach(id=>$(id).value="");$("search").value="";render()});$("filterbtn").addEventListener("click",()=>$("filters").classList.toggle("open"));load();
+</script>
+</body></html>
